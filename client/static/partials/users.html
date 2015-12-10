@@ -1,0 +1,46 @@
+<div class="container" ng-controller="singleController">
+	<div class="row">
+		<div class="col-sm-12">
+			<h1 style="text-align:center;">Users</h1>
+			<h3> Add a User</h3>
+			<form class="form form-inline" id="userForm">
+				<div class="form-group">
+					<label>First Name</label>
+				<input type="text" class="form-control" id="firstname" ng-model="newUser.first_name">
+			</div>
+			<div class="form-group">
+				<label>Last Name</label>
+				<input type="text" class="form-control"  id="lastname" ng-model="newUser.last_name">
+			</div>
+			<label>Favorite Language</label>
+				<input type="text" class="form-control"  id="favoritelanguage" ng-model="newUser.favlanguage">
+				<div class="form-group">
+				<input type="submit" value ="Add User!" class="btn btn-success pull-right" ng-click="addUser()">
+			</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h3> Search Users</h3>
+			<input type="text" class="form-control" ng-model="user_filter">
+			<table class="table table-highlight">
+				<thead>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Favorite Language</th>
+					<th>Actions</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users | filter: user_filter track by $index">
+						<td ng-bind="user.FirstName"></td>
+						<td ng-bind="user.LastName"</td>
+						<td ng-bind="user.FavoriteLanguage"</td>
+						<td><button class="btn btn-danger" ng-click="destroyUser(user)">Delete</button></td>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</div>
+
+</div>

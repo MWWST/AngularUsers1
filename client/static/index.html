@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+ <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+ <!-- THESE TWO VERSIONS BELOW MUST MATCH!!!! -->
+   
+    <script>
+    //  inject the ngRoute dependency in the module.
+    var myApp = angular.module('myApp', ['ngRoute']);
+    //  use the config method to set up routing:
+    myApp.config(function ($routeProvider) {
+      $routeProvider
+        .when('/',{
+            templateUrl: 'partials/users.html'
+        })
+        .when('/users',{
+            templateUrl: 'partials/users.html'
+        })
+        .otherwise({
+          redirectTo: '/'
+        });
+    });
+
+    myApp.factory('userFactory',function(){
+     var users = [
+      {FirstName: 'Tukihiro', LastName:'Matsumoto',FavoriteLanguage:'Ruby'},
+      {FirstName: 'Ryan',LastName: 'Dal',FavoriteLanguage:'JavaScript'},
+      {FirstName: 'Michael',LastName: 'Weitzman',FavoriteLanguage:'Javascript'}
+     ];
+
+
+   
+      var factory ={};
+
+      factory.getUsers = function(callback){
+        callback(users);
+      }
+
+      factory.addUser= function(data){
+        users.push(data);
+      }
+
+      factory.destroy = function(data){
+        console.log(data);
+        users.splice(data,1);
+      }
+
+      return factory;
+
+    })
+    //  build the controllers
+   
+
+
+    myApp.controller('singleController', function ($scope,userFactory) {
+      $scope.users=[];
+  
+      userFactory.getUsers(function(data){
+        $scope.users=data;
+        console.log('scope foods',$scope.users)
+      
+      })
+
+
+      $scope.addUser=function(){
+        var NewUser = {FirstName:$scope.newUser.first_name,
+        LastName:$scope.newUser.last_name, FavoriteLanguage: $scope.newUser.favlanguage};
+
+        userFactory.addUser(NewUser);
+        $scope.newUser={};
+      }
+
+      $scope.destroyUser=function(user){
+        console.log(user)
+
+        var delUser = $scope.users.indexOf(user);
+        userFactory.destroy(delUser);
+
+
+
+      }
+
+
+    })
+</script>
+  </head>
+  <div ng-app='myApp'>
+    
+       <!--  <a href="#/">Partial 1</a> | <a href="#/partial2">Partial 2</a> | <a href="#/partial3">Partial 3</a> -->
+        <div ng-view="">
+        </div>
+    </div>
